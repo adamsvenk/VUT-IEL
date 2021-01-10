@@ -1,0 +1,369 @@
+  \documentclass{article}
+  \pagenumbering{arabic}
+  \usepackage[slovak]{babel}
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage[left=2cm,text={17cm, 24cm},top=3cm, bottom=2cm]{geometry}
+  \usepackage{graphicx}
+  \usepackage{amsmath}
+  \usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage[european]{circuitikz}
+\usepackage{amssymb}
+  \usepackage{float}
+  \title{\huge Semestrálny projekt}
+  \author{Adam Švenk (xsvenk00)}
+  \date{\today}
+  \begin{document}
+\begin{titlepage}
+	\begin{center}
+		\textsc{\huge Vysoké Učení Technické v Brně} \\[0.5cm]
+		{\LARGE Fakulta informačních technologií}
+				
+		\begin{figure}[H]
+			\center\includegraphics[width=0.5\linewidth]{logo.pdf}
+		\end{figure}
+				
+		\vspace{3cm}
+				
+		\textsc{\LARGE Elektronika pro informační technologie} \\[0.5cm]
+		\textsc{\LARGE 2018/2019} \\[3.5cm]
+				
+		\textbf{{\LARGE Semestrálny projekt}}
+	\end{center}
+	\vfill
+	\begin{flushleft} 
+		\large
+		Adam Švenk (xsvenk00)
+		\hfill
+		Brno, \today
+	\end{flushleft}
+\end{titlepage}
+
+\part{Príklady}
+
+\section{Príklad č. 1}
+\subsection{Zadanie}
+Stanovte napätie $U_{R_{3}}$ a prúd $I_{R_{3}}$.
+Použite metódu postupného zjednodušovania obvodu. \\
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		sk. & $U_{1}$~[V] & $U_{2}$~[V] & $R_{1}~[\Omega]$ & $R_{2}~[\Omega]$ & $R_{3}~[\Omega]$ & $R_{4}~[\Omega]$ & $R_{5}~[\Omega]$ & $R_{6}~[\Omega]$ & $R_{7}~[\Omega]$ & $R_{8}~[\Omega]$ \\
+		\hline
+		H   & 135         & 80          & 680              & 600              & 260              & 310              & 575              & 870              & 355              & 265              \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{center}
+	\begin{circuitikz} 
+		\draw
+		(0,4) to[dcvsource, v_=$U_1$] (0,2)
+		(0,2) to[dcvsource, v_=$U_2$] (0,0)
+		(0,4) to[short, -*] (1,4)
+		(1,4) to[R, *-, l=$R_1$] (4,4)
+		(4,4) to[R, -*, l=$R_2$] (7,4)
+		(1,4) to[short, *-] (1,2)
+		(1,2) to[R, -*, l=$R_3$] (7,2)
+		(7,2) to[R, *-*, l=$R_4$] (7,4)
+		(7,4) to[R, *-, l=$R_5$] (10,4)
+		(7,2) to[R, *-*, l=$R_6$] (10,2)
+		(10,4) to[short] (10,0)
+		(10,0) to[short] (6,0)
+		(6,0) to [short, *-] (6,1)
+		(6,0) to [short, *-] (6,-1)
+		(6,1) to [R, l=$R_7$] (3,1)
+		(6,-1) to [R, l=$R_8$] (3,-1)
+		(3,1) to[short, -*] (3,0)
+		(3,-1) to[short, -*] (3,0)
+		(3,0) to[short] (0,0)
+		;
+	\end{circuitikz}
+\end{center}
+\newpage
+\subsection{Riešenie}
+\begin{center}
+	1.) Transfigurácia z trojuholníkového zapojenia na zapojenie do tvaru hviezdy.\\
+	\begin{circuitikz} 
+		\draw
+		(0,4) to[dcvsource, v_=$U_1$] (0,2)
+		(0,2) to[dcvsource, v_=$U_2$] (0,0)
+		(0,4) to[short] (1,4)
+		(1,4) to[R, *-, l=$R_{12}$] (4,4)
+		(4,4) to[R, l=$R_A$] (7,4)
+		(1,4) to[short, *-] (1,2)
+		(1,2) to[R, l=$R_3$] (4,2)
+		(4,2) to[R, l=$R_B$] (7,2)
+		(7,3) to[R, *-, l=$R_C$] (10,3)
+		(7,4) to[short] (7,2)
+		(10,3) to[short] (10,0)
+		(10,0) to[short] (6,0)
+		(6,0) to [R, l=$R_{78}$] (3,0)
+		(3,0) to[short] (0,0)
+		;
+	\end{circuitikz}
+		
+	$$R_{12} = R_1 + R_2 = 1280[\Omega]$$
+	$$R_{78} = \frac{R_7 \cdot R_8}{R_7 + R_8} = \frac{355 \cdot 265}{355 + 265} = \frac{94075}{620} \doteq 151,7339 [\Omega]$$
+	$$R_A = \frac{R_4 \cdot R_5}{R_4 + R_5 + R_6} = \frac{310 \cdot 575}{310 + 575 + 870} = \frac{178250}{1755} \doteq 101,567 [\Omega]$$
+	$$R_B = \frac{R_4 \cdot R_6}{R_4 + R_5 + R_6} = \frac{310 \cdot 870}{310 + 575 + 870} = \frac{269700}{1755} \doteq 153,6752 [\Omega]$$
+	$$R_C = \frac{R_5 \cdot R_6}{R_4 + R_5 + R_6} = \frac{575 \cdot 870}{310 + 575 + 870} = \frac{500250}{1755} \doteq 285,0427 [\Omega]$$
+	\vskip 0.5cm
+	2.) Rezistory $R_{12}$ a $R_A$ sú zapojené sériovo.\\
+	Tak isto sú zapojené aj rezistory $R_3$ a $R_B$.\\
+	Výsledné rezistory $R_{12A}$ a $R_{3B}$ sú zapojené paralelne.\\
+		   
+	\begin{circuitikz} 
+		\draw
+		(0,4) to[dcvsource, v_=$U_1$] (0,2)
+		(0,2) to[dcvsource, v_=$U_2$] (0,0)
+		(0,4) to[R, l=$R_{12A3B}$] (7,4)
+		(7,4) to[R, l=$R_C$] (10,4)
+		(10,4) to[short] (10,0)
+		(10,0) to [R, l=$R_{78}$] (0,0)
+		;
+	\end{circuitikz}
+	$$R_{12A} = R_{12} + R_A = 1280 + 101,567 = 1381,567 [\Omega]$$
+	$$R_{3B} = R_3 + R_B = 260 + 153,6752 = 413,6752 [\Omega]$$
+	$$R_{12A3B} = \frac{R_{12A} \cdot R_{3B}}{R_{12A} + R_{3B}} = \frac{{1381,567} \cdot {413,6752}}{1381,567 + 413,6752} = \frac{571527,8776}{1795,25} \doteq 318,3556[\Omega]$$
+	\newpage
+	3.) Rezistory $R_{123AB}$, $R_C$ a $R_{78}$ sú zapojené sériovo.\\
+	Zdroje $U_1$ a $U_2$ sú zapojené sériovo.\\
+	\begin{circuitikz} 
+		\draw
+		(0,4) to[dcvsource, v_=$U$] (0,0)
+		(0,4) to[R, l=$R$] (10,4)
+		(10,4) to[short] (10,0)
+		(10,0) to [short] (0,0)
+		;
+	\end{circuitikz}
+	$$U = U_1 + U_2 = 135 + 80 = 215 [V]$$
+	$$R = R_{12A3B} + R_C + R_{78} = 318,3556 + 285,0427 + 151,7339 = 755,1322 [\Omega]$$
+	\vskip 0.5cm
+	4.) Celkový prúd pretekajúci obvodom získame pomocou Ohmovho zákona.\\
+	$$I = \frac{U}{R} = \frac{215}{755,1322} \doteq 0,2847[A]$$
+	\vskip 0.5cm
+	5.) V prípade sériovehó zapojenia rezistorov preteké všetkými rezistormy v obvode rovnaký prúd  $I$.\\
+	Napätie $U_{12A3B}$ na rezistore $R_{12A3B}$ vypočítame pomocou Ohmovho zákona. 
+		      
+	$$U_{12A3B} = R_{12A3B} \cdot I = 318,3556 \cdot 0,2847 \doteq 90,6358 [V]$$
+	$$I_{R_3} = \cfrac{U_{R_{12A3B}}}{R_{3B}} = \cfrac{90,6358}{413,6752} \doteq 0,2191 [A]$$
+	$$U_{R_3} = I_{R_3} \cdot R_3 = 0,2191 \cdot 260 \doteq 56,966 [V]$$
+\end{center}
+
+\subsection{Výsledok}
+$$U_{R_3} \doteq 56,97[V]$$
+$$I_{R_3} \doteq 0,22[A]$$
+\newpage
+\section{Príklad č.2}
+\subsection{Zadanie}
+Stanovte napätie $U_{R_{1}}$ a prúd $I_{R_{1}}$.
+Použite metódu Theveninovej vety.\\
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		sk. & $U_{1}$~[V] & $R_{1}~[\Omega]$ & $R_{2}~[\Omega]$ & $R_{3}~[\Omega]$ & $R_{4}~[\Omega]$ & $R_{5}~[\Omega]$ \\
+		\hline
+		B   & 100         & 50               & 310              & 610              & 220              & 570              \\
+		\hline
+	\end{tabular}
+\end{table}
+\begin{center}
+	\begin{circuitikz} 
+		\draw
+		(2,4) to[dcvsource, v=$U$] (2,1)
+		(2,4) to[R, l=$R_5$] (0,4)
+		(0,4) to[short, i=$I_{R_1}$] (0,5)
+		(0,4) to[R, *-*, l=$R_2$] (-2,4)
+		(0,5) to[R, l=$R_1$, v_=$U_{R_1}$] (-2,5)
+		(0,4) to[R, -*, l=$R_4$] (0,1)
+		(0,1) to[R, l=$R_3$] (-2,1)
+		(-2,1) to[short] (-2,5)
+		(0,1) to[short] (2,1)
+		;
+	\end{circuitikz}
+\end{center}
+\newpage
+\subsection{Riešenie}
+\begin{center}
+	1.) Odstránime z obvodu rezistor $R_1$, ktorý označujeme aj ako $R_L$ (load restistor).  \\
+	Napätie na termináloch, kde bol pripojený rezistor označujeme aj $V_{th}$. \\
+	Odpor zvyšného obvodu označujeme $R_{th}$.
+	Celý obvod môžeme teda nahradiť zdrojom napätia $V_{th}$ a rezistorom $R_{th}$ zapojeného v sérii.
+	
+	\begin{center}
+		\begin{circuitikz} 
+			\draw
+			(2,4) to[dcvsource, v=$U$] (2,1)
+			(2,4) to[R, l=$R_5$] (0,4)
+			(0,4) to[short, -*] (0,5)
+			(0,4) to[R, *-*, l=$R_2$] (-2,4)
+			(0,4) to[R, -*, l=$R_4$] (0,1)
+			(0,1) to[R, l=$R_3$] (-2,1)
+			(-2,1) to[short, -*] (-2,5)
+			(0,1) to[short] (2,1)
+			;
+		\end{circuitikz}
+	\end{center}
+	\vskip 0.5cm
+	2.) Použijeme metódu slučkových napätí (označíme si slučku $I_1$ a slučku $I_1 - I_2$).
+	\begin{center}
+		\begin{circuitikz} 
+			\draw
+			(2,4) to[dcvsource, v=$U$] (2,1)
+			(2,4) to[R, l=$R_5$] (0,4)
+			(0,4) to[short, -*] (0,5)
+			(0,4) to[R, *-*, l=$R_2$] (-2,4)
+			(0,4) to[R, -*, l=$R_4$] (0,1)
+			(0,1) to[R, l=$R_3$] (-2,1)
+			(-2,1) to[short, -*] (-2,5)
+			(0,1) to[short] (2,1)
+			;
+			\draw[thin, ->, >=triangle 45] (1,2.8)node{$I_1$}  ++(-60:0.5) arc (-60:170:0.5);
+			\draw[thin, ->, >=triangle 45] (-1,2.8)node{$I_1 - I_2$}  ++(-60:0.5) arc (-60:170:0.5);
+		\end{circuitikz}
+	\end{center}
+	\vskip 0.5cm
+	3.) Vytvoríme si rovnicu podľa 2. Kirchhoffovho zákona pre prvú slučku označenú $I_1$.
+	$$\pm R_5 \cdot I_1 \pm R_4 \cdot I_2 \pm U = 0 $$
+	$$- 570 \cdot I_1 - 220 \cdot I_2 + 100 = 0$$
+	$$- 57 \cdot I_1 - 22 \cdot I_2 + 10 = 0$$
+	\vskip 0.5cm
+	4.) Vytvoríme si rovnicu podľa 2. Kirchhoffovho zákona pre druhú slučku označenú $I_1 - I_2$.
+	$$\pm R_2 \cdot(I_1 - I_2) \pm R_3 \cdot(I_1 - I_2) \pm R_4 \cdot I_2 = 0$$
+	$$- 310 \cdot(I_1 - I_2) - 610 \cdot(I_1 - I_2) + 220 \cdot I_2 = 0$$
+	$$- 310 \cdot I_1 + 310 \cdot I_2 - 610 \cdot I_1 + 610 \cdot I_2 + 220 \cdot I_2 = 0$$
+	$$- 920 \cdot I_1 + 1140 \cdot I_2 = 0$$
+	$$- 92 \cdot I_1 + 114 \cdot I_2 = 0$$
+	\newpage
+	5.) Vypočítame $I_2$ pomocou sústavy rovníc s dvomi neznámymi.
+	$$- 57 \cdot I_1 - 22 \cdot I_2 + 10 = 0$$
+	$$- 92 \cdot I_1 + 114 \cdot I_2 = 0$$
+	\vskip 0.2cm
+	$$5244 \cdot I_1 + 2024 \cdot I_2 = 902$$
+	$$- 5244 \cdot I_1 + 6498 \cdot I_2 = 0$$
+	\vskip 0.2cm
+	$$8522 \cdot I_2 = 902$$
+	$$I_2 \doteq 0,108 [A]$$ 
+	\vskip 0.5cm
+	6.) Vypočítané $I_2$ si dosadíme do ľubovoľnej rovnice a vypočítame $I_1$.
+	$$- 57 \cdot I_1 - 22 \cdot 0,108 + 10 = 0$$
+	$$- 57 \cdot I_1 + 7,624 = 0$$
+	\vskip 0.2cm
+	$$- 57 \cdot I_1 = - 7,624$$
+	$$I_1 \doteq  0,1338 [A]$$ 
+	\vskip 0.5cm
+	7.) Vypočítame napätie $V_{th}$.
+	$$- V_{th} + R_2 \cdot (I_1 - I_2) = 0 [V]$$
+	$$V_{th} = 310 \cdot (0,1338 - 0,108) =  7,998 [V]$$
+	\vskip 0.5cm
+	8.) Vypočítame celkový odpor obvodu $R_{th}$.
+	$$R_{345} = R_3 + \frac{R_4 \cdot R_5}{R_4 + R5} = 610 + \cfrac{220 \cdot 570}{220 + 570} = 610 + \cfrac{125400}{790} \doteq 768,7341 [\Omega]$$
+	$$R{th} = \cfrac{R_2 \cdot R_{345}}{R_2 + R_{345}} = \cfrac{310 \cdot 768,7341}{310 + 768,7341} = \cfrac{238307,571}{1078,7341} \doteq 220,9141 [\Omega]$$
+	\vskip 0.5cm
+	9. Pomocou Ohmovho zákona vypočítame prúd $I_{R_1}$ a napätie $U_{R_1}$.
+	$$I_{R_1} = \cfrac{V_{th}}{R_1 + R_{th}} = \cfrac{7,998}{50 + 220,9141} \doteq  0,0295 [A]$$
+	$$U_{R_1} = R_1 \cdot I_{R_1} = 50 \cdot 0,0295 \doteq 1,475 [V]$$
+	\vskip 0.5cm
+\end{center}
+\subsection{Výsledok}
+$$U_{R_1} \doteq 1,48 [V]$$
+$$I_{R_1} \doteq 0,3 [A]$$
+\newpage
+\section{Príklad č.3}
+\subsection{Zadanie}
+Stanovte napätie $U_{R_{1}}$ a prúd $I_{R_{1}}$.
+Použite metódu uzlových napätí ($U_C$, $U_B$, $U_C$)\\
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+		\hline
+		sk. & $U$~[V] & $I_{1}$~[A] & $I_{2}$~[A] & $R_{1}~[\Omega]$ & $R_{2}~[\Omega]$ & $R_{3}~[\Omega]$ & $R_{4}~[\Omega]$ & $R_{5}~[\Omega]$ \\
+		\hline
+		A   & 120     & 0,9         & 0,7         & 53               & 49               & 65               & 39               & 32               \\
+		\hline
+	\end{tabular}
+\end{table}
+\begin{center}
+	\begin{circuitikz} 
+		\draw (0, -4) to[dcvsource=$U$] (0, -2) to[R=$R_{1}$] (0, 0) -- (2, 0) to[R=$R_{2}$, v=$U_{A}$, *-*] (2, -4) -- (0, -4);
+		\draw (2, 0) -- (2, 2) to[ioosource=$I_{1}$] (6, 2) -- (6, 0) to[R=$R_{3}$, i=$I_{R_{3}}$, v=$U_{R_{3}}$, *-*] (2, 0);
+		\draw (6, 0) to[R=$R_{4}$] (6, -4) -- (8, -4) to[ioosource=$I_{2}$] (8, 0) -- (6, 0);
+		\draw (6, -4) to[R=$R_{5}$, v=$U_{C}$, *-*] (2, -4);
+		\draw (6, 0) to[open, v=$U_{B}$] (2, -4);
+	\end{circuitikz}
+\end{center}
+\newpage
+
+\subsection{Riešenie}
+\begin{center}
+	1.) Určíme si uzly $A$, $B$ a $C$.
+	\begin{center}
+		\begin{circuitikz} 
+			\draw (0, -4) to[dcvsource=$U$] (0, -2) to[R=$R_{1}$] (0, 0) -- (2, 0) to[R=$R_{2}$, v=$U_{A}$, *-*] (2, -4) -- (0, -4);
+			\draw (2, 0) -- (2, 2) to[ioosource=$I_{1}$] (6, 2) -- (6, 0) to[R=$R_{3}$, i=$I_{R_{3}}$, v=$U_{R_{3}}$, *-*] (2, 0);
+			\draw (6, 0) to[R=$R_{4}$] (6, -4) -- (8, -4) to[ioosource=$I_{2}$] (8, 0) -- (6, 0);
+			\draw (6, -4) to[R=$R_{5}$, v=$U_{C}$, *-*] (2, -4);
+			\draw (6, 0) to[open, v=$U_{B}$] (2, -4);
+			\draw (2,0) to[short, l=$A$] (2,0);
+			\draw (6,0) to[short, l=$B$] (6,0);
+			\draw (6,-4) to[short, l=$C$] (6,-4);
+		\end{circuitikz}
+	\end{center}
+	2.) Napíšeme si rovnice pre jednotlivé uzly $A$, $B$ a $C$ pomocou 1. Kirchhoffovho zákona.
+	$$A: I_{R_1} - I_1 + I_{R_3} - I_{R_2} = 0$$
+	$$B: I_1 - I_{R_3} + I_2 - I_{R_4} = 0$$
+	$$C:  I_{R_4} - I_2 - I_{R_5} = 0$$
+	\vskip 0.5cm
+	3.) Pomocou Ohmovho zákona si vyjadríme prúdy na jednotlivých rezistoroch.
+	$$A: -I_1 + \frac{U - U_A}{R_1} + \frac{U_B - U_A}{R_3} - \frac{U_A}{R_2} = 0$$
+	$$B: I_1 - \frac{U_B - U_A}{R_3} + I_2 - \frac{U_B - U_C}{R_4} = 0$$
+	$$C: -I_2 - \frac{U_C}{R_5} + \frac{U_B - U_C}{R_4} = 0$$
+	\vskip 0.5cm
+	4.) Do jednotlivých rovníc si dosadíme hodnoty zo zadania úlohy.
+	$$A: -0,9 + \frac{120 - U_A}{53} + \frac{U_B - U_A}{65} - \frac{U_A}{49} = 0$$
+	$$B: 0,9 - \frac{U_B - U_A}{65} + 0,7 - \frac{U_B - U_C}{39} = 0$$
+	$$C: -0,7 - \frac{U_C}{32} + \frac{U_B - U_C}{39} = 0$$
+	\vskip 0.5cm
+	5.) Postupnými úpravami dostaneme upravené a zjednodušené rovnice.
+	$$A:2597 \cdot U_B - 9227 \cdot U_A = -230275,5$$
+	$$B:-104 \cdot + 39 \cdot U_A + 65 \cdot U_C = -4056$$
+	$$C: -71 \cdot U_C + 32 \cdot U_B = 873,6$$
+	\vskip 0.5cm
+	6.) Rovnice vypočítame a dostane výsledné hodnoty napätí.
+	$$U_A \doteq 43,6391 [V]$$
+	$$U_B \doteq 66,3777 [V]$$
+	$$U_C \doteq 17,6209 [V]$$
+	\vskip 0.5cm
+	7.) Vypočítame $U_{R_3}$ a pomocou Ohmovho zákona vypočítame $I_{R_3}$.
+	$$U_{R_3} = U_B - U_A = 66,3777 - 43,6391 = 22,7386 [V]$$
+	$$I_{R_3} = \frac{U_{R_3}}{R_3} = \frac{22,7386}{65} \doteq 0,3498 [A]$$
+\end{center}
+\subsection{Výsledok}
+$$U_{R_3} \doteq 22,74 [V]$$
+$$I_{R_3} \doteq 0,35 [A]$$
+\newpage
+\part*{Výsledky}
+\vspace{50px}
+\begin{center}
+	\begin{tabular}{| c | c | c |}
+		\hline
+		\textbf{Príklad} & \textbf{Skupina.} & \textbf{Výsledky}                                  \\
+		\hline
+		1                 & H                 & $U_{R_3} \doteq 56,97[V], I_{R_3} \doteq 0,22[A]$   \\
+		\hline
+		2                 & B                 & $U_{R_1} \doteq 1,48 [V], I_{R_1} \doteq 0,3 [A]$   \\
+		\hline
+		3                 & A                 & $U_{R_3} \doteq 22,74 [V], I_{R_3} \doteq 0,35 [A]$ \\
+		\hline
+		4                 & H                 &                                                     \\
+		\hline
+		5                 & B                 &                                                     \\
+		\hline
+	\end{tabular}
+\end{center}
+\end{document}
